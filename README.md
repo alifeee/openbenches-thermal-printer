@@ -4,6 +4,10 @@ Printing benches from <https://openbenches.org/> with a ZJ-5870 ESC/POS thermal 
 
 ![gif of thermal printer printing out a picture of a bench and then an inscription](images/printer.gif)
 
+For more information on the bench endpoints, see the [transformer](https://github.com/alifeee/openbenches-train-sign/tree/main/transformer).
+
+![picture of printed thermal paper, showing several benches and inscriptions](images/printer.jpg)
+
 ## Installation
 
 Install required python modules
