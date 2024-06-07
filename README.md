@@ -30,7 +30,7 @@ If it is not, it prints the bench using `printbench.sh`.
 This script can be run as a cron, by running `crontab -e` and entering (change the directory to whatever it is installed to)
 
 ```cron
-* * * * * /home/alifeee/thermalprinter/benches/checkbench.sh >> /home/alifeee/thermalprinter/benches/cron.log 2>&1
+10 * * * * /home/alifeee/thermalprinter/benches/checkbench.sh >> /home/alifeee/thermalprinter/benches/cron.log 2>&1
 ```
 
 ## Usage
