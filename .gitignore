@@ -3,3 +3,9 @@
 
 # temporary image
 /temp.jpeg
+
+# cache
+/bench_id.cache
+
+# cron results
+/cron.log
