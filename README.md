@@ -2,6 +2,8 @@
 
 Printing benches from <https://openbenches.org/> with a ZJ-5870 ESC/POS thermal printer.
 
+![gif of thermal printer printing out a picture of a bench and then an inscription](images/printer.gif)
+
 ## Installation
 
 Install required python modules
