@@ -21,6 +21,18 @@ sudo apt-get install python-dev
 pip install pillow
 ```
 
+### Install cron
+
+The file `checkbench.sh` checks if the cached bench ID is the same as the current bench ID.
+
+If it is not, it prints the bench using `printbench.sh`.
+
+This script can be run as a cron, by running `crontab -e` and entering (change the directory to whatever it is installed to)
+
+```cron
+* * * * * /home/alifeee/thermalprinter/benches/checkbench.sh >> /home/alifeee/thermalprinter/benches/cron.log 2>&1
+```
+
 ## Usage
 
 Print latest bench
