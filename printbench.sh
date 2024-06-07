@@ -8,7 +8,9 @@
 # set -x # debug
 
 # temporary image file
-IMG_FILE="temp.jpeg"
+IMG_FILENAME="temp.jpeg"
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+IMG_FILE="${SCRIPT_DIR}/${IMG_FILENAME}"
 # pixel width of images for printer
 PRINTER_WIDTH="384"
 
@@ -43,7 +45,7 @@ mogrify -auto-orient -resize $PRINTER_WIDTH $IMG_FILE
 # printf "\033@" > /dev/usb/lp0 # reset
 
 echo "print image and text"
-./env/bin/python printwescpos.py $IMG_FILE "${bench_text}"
+${SCRIPT_DIR}/env/bin/python "${SCRIPT_DIR}/printwescpos.py" $IMG_FILE "${bench_text}"
 
 # echo "print inscription: ${bench_text}"
 # printf "\n" > /dev/usb/lp0
