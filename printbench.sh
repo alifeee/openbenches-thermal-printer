@@ -21,6 +21,11 @@ bench_text=$(echo "${benchresponse}" | sed '1,/^\r$/d')
 
 bench_info_json=$(curl -s "https://openbenches.org/api/bench/${bench_id}")
 
+echo "[printbench.sh]"
+date
+echo "printing bench id ${bench_id}"
+echo "json data: ${bench_info_json}"
+
 # choose image, in the preference bench > inscription > view (not all images are guaranteed)
 inscription_pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("inscription")) | .URL')
 bench_pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("bench")) | .URL')
@@ -46,6 +51,7 @@ mogrify -auto-orient -resize $PRINTER_WIDTH $IMG_FILE
 
 echo "print image and text"
 ${SCRIPT_DIR}/env/bin/python "${SCRIPT_DIR}/printwescpos.py" $IMG_FILE "${bench_text}"
+echo "printed!"
 
 # echo "print inscription: ${bench_text}"
 # printf "\n" > /dev/usb/lp0
