@@ -14,6 +14,10 @@ CACHE_FILE="${SCRIPT_DIR}/${CACHE_FILENAME}"
 echo "opening cache file ${CACHE_FILE}"
 
 benchresponse=$(curl -i -Ss "http://server.alifeee.co.uk/bench/full.cgi")
+if [ -z $benchresponse ]; then
+  echo "request failed somehow :("
+  exit 1
+fi
 bench_id=$(echo "${benchresponse}" | pcregrep -o1 "Bench-URL: .*/bench/(.*)\r")
 prev_bench_id=$(cat $CACHE_FILE)
 
