@@ -51,6 +51,11 @@ mogrify -auto-orient -resize $PRINTER_WIDTH $IMG_FILE
 
 echo "print image and text"
 ${SCRIPT_DIR}/env/bin/python "${SCRIPT_DIR}/printwescpos.py" $IMG_FILE "${bench_text}"
+if [ $? -ne 0 ]; then
+  echo "failed to print!"
+  exit 1
+fi
+
 echo "printed!"
 
 # echo "print inscription: ${bench_text}"

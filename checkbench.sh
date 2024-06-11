@@ -14,7 +14,7 @@ CACHE_FILE="${SCRIPT_DIR}/${CACHE_FILENAME}"
 echo "opening cache file ${CACHE_FILE}"
 
 benchresponse=$(curl -i -Ss "http://server.alifeee.co.uk/bench/full.cgi")
-if [ -z $benchresponse ]; then
+if [ -z "${benchresponse}" ]; then
   echo "request failed somehow :("
   exit 1
 fi
@@ -39,5 +39,9 @@ fi
 # new bench!
 echo "a new bench! running ${SCRIPT_DIR}/printbench.sh"
 ${SCRIPT_DIR}/printbench.sh
+if [ $? -ne 0 ]; then
+  echo "failed to print bench. not saving to cache... quitting..."
+  exit 1
+fi
 echo "saving new bench ID to cache"
 echo $bench_id > $CACHE_FILE
