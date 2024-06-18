@@ -7,6 +7,14 @@
 
 # set -x # debug
 
+echo "[printbench.sh]"
+date
+
+if [ -z $1 ]; then
+  echo "must specify bench ID, e.g: ./printbench 32004"
+  exit 1
+fi
+
 # temporary image file
 IMG_FILENAME="temp.jpeg"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -14,17 +22,14 @@ IMG_FILE="${SCRIPT_DIR}/${IMG_FILENAME}"
 # pixel width of images for printer
 PRINTER_WIDTH="384"
 
-benchresponse=$(curl -i -Ss "http://server.alifeee.co.uk/bench/full.cgi?n=$1")
-
-bench_id=$(echo "${benchresponse}" | pcregrep -o1 "Bench-URL: .*/bench/(.*)\r")
-bench_text=$(echo "${benchresponse}" | sed '1,/^\r$/d')
+bench_id=$1
+echo "printing bench id ${bench_id}"
 
 bench_info_json=$(curl -s "https://openbenches.org/api/bench/${bench_id}")
-
-echo "[printbench.sh]"
-date
-echo "printing bench id ${bench_id}"
 echo "json data: ${bench_info_json}"
+
+bench_text=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.popupContent' | sed 's/<br \/>//g' | sed 's/^\s*//' | sed 's/\s*$//')
+echo "bench text: ${bench_text}"
 
 # choose image, in the preference bench > inscription > view (not all images are guaranteed)
 inscription_pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("inscription")) | .URL')

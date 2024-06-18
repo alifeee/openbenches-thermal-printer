@@ -5,7 +5,7 @@
 /temp.jpeg
 
 # cache
-/bench_id.cache
+/*.cache
 
 # cron results
 /cron.log
