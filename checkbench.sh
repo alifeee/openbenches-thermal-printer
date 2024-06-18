@@ -13,6 +13,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 CACHE_FILE="${SCRIPT_DIR}/${CACHE_FILENAME}"
 echo "opening cache file ${CACHE_FILE}"
 
+echo "curl for http://server.alifeee.co.uk/bench/full.cgi"
 benchresponse=$(curl -i -Ss "http://server.alifeee.co.uk/bench/full.cgi")
 if [ -z "${benchresponse}" ]; then
   echo "request failed somehow :("
