@@ -32,22 +32,30 @@ bench_text=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.popup
 echo "bench text: ${bench_text}"
 
 # choose image, in the preference bench > inscription > view (not all images are guaranteed)
-inscription_pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("inscription")) | .URL')
-bench_pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("bench")) | .URL')
-view_pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("view")) | .URL')
-if [ ! -z $bench_pic_url ]; then
-  media_url="${bench_pic_url}"
-elif [ ! -z $inscription_pic_url ]; then
-  media_url="${inscription_pic_url}"
-elif [ ! -z $view_pic_url ]; then
-  media_url="${view_pic_url}"
-else
+# try inscription
+pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("inscription")) | .URL')
+# try bench
+if [ -z "${pic_url}" ]; then
+  pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("bench")) | .URL')
+fi
+# try view
+if [ -z "${pic_url}" ]; then
+  pic_url=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.media | .[] | select(.media_type | contains("view")) | .URL')
+fi
+if [ -z "${pic_url}" ]; then
   echo "no image found :("
   exit 1
 fi
 
-echo "downloading image"
-wget -O $IMG_FILE "https://openbenches.org$media_url"
+echo "got image(s): ${pic_url}"
+
+if [ $(echo "${pic_url}" | wc -l) -gt 1 ];then
+  echo "looks like multiple images were found! taking only the first"
+  pic_url=$(echo "${pic_url}" | head -n1)
+fi
+
+echo "downloading image: ${pic_url}"
+wget -O $IMG_FILE "https://openbenches.org${pic_url}"
 echo "auto-rotating image"
 mogrify -auto-orient -resize $PRINTER_WIDTH $IMG_FILE
 
@@ -56,9 +64,10 @@ mogrify -auto-orient -resize $PRINTER_WIDTH $IMG_FILE
 
 echo "print image and text"
 ${SCRIPT_DIR}/env/bin/python "${SCRIPT_DIR}/printwescpos.py" $IMG_FILE "${bench_text}"
-if [ $? -ne 0 ]; then
-  echo "failed to print!"
-  exit 1
+ec=$?
+if [ $ec -ne 0 ]; then
+  echo "failed to print! exit code ${ec}"
+  exit $ec
 fi
 
 echo "printed!"
