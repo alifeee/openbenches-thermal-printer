@@ -25,7 +25,7 @@ PRINTER_WIDTH="384"
 bench_id=$1
 echo "printing bench id ${bench_id}"
 
-bench_info_json=$(curl -s "https://openbenches.org/api/bench/${bench_id}")
+bench_info_json=$(curl -s "https://openbenches.org/api/bench/${bench_id}?truncated=false")
 echo "json data: ${bench_info_json}"
 if [ "${bench_info_json}" == "{}" ]; then
   echo "no data. a duplicate bench? a redirect?"
