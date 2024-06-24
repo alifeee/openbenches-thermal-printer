@@ -20,19 +20,19 @@ if [ -z "${benchresponse}" ]; then
   exit 1
 fi
 bench_id=$(echo "${benchresponse}" | pcregrep -o1 "Bench-URL: .*/bench/(.*)\r")
-prev_bench_id=$(cat $CACHE_FILE | tail -n1)
+prev_bench_id=$(cat $CACHE_FILE | tail -n1 | awk -F ' ' '{print $1}')
 
 echo "bench IDs. current: <${bench_id}>, last printed: <${prev_bench_id}>"
 
 # no cache
-if [ -z $prev_bench_id ]; then
+if [ -z "${prev_bench_id}" ]; then
   echo "no cache! creating it and exiting..."
   echo $bench_id > $CACHE_FILE
   exit 0
 fi
 
 # no change (same bench)
-if [ $bench_id -eq $prev_bench_id ]; then
+if [ "${bench_id}" -eq "${prev_bench_id}" ]; then
   echo "benches are the same, doing nothing..."
   exit 0
 fi
@@ -53,4 +53,4 @@ elif [ $ec -ne 0 ]; then
   exit $ec
 fi
 echo "saving new bench ID to cache"
-echo $next_id >> $CACHE_FILE
+echo "${next_id}${skipped}" >> $CACHE_FILE
