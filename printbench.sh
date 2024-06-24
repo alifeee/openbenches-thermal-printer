@@ -59,7 +59,7 @@ if [ $(echo "${pic_url}" | wc -l) -gt 1 ];then
 fi
 
 echo "downloading image: ${pic_url}"
-wget -O $IMG_FILE "https://openbenches.org${pic_url}"
+wget -nv -O $IMG_FILE "https://openbenches.org${pic_url}"
 echo "auto-rotating image"
 mogrify -auto-orient -resize $PRINTER_WIDTH $IMG_FILE
 
