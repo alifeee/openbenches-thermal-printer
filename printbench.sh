@@ -25,12 +25,8 @@ PRINTER_WIDTH="384"
 bench_id=$1
 echo "printing bench id ${bench_id}"
 
-bench_info_json=$(curl -s "https://openbenches.org/api/bench/${bench_id}?truncated=false")
+bench_info_json=$(curl -s -L "https://openbenches.org/api/bench/${bench_id}?truncated=false")
 echo "json data: ${bench_info_json}"
-if [ "${bench_info_json}" == "{}" ]; then
-  echo "no data. a duplicate bench? a redirect?"
-  exit 15
-fi
 
 bench_text=$(echo "${bench_info_json}" | jq -r '.features | .[].properties.popupContent' | sed 's/<br \/>//g' | sed 's/^\s*//' | sed 's/\s*$//')
 echo "bench text: ${bench_text}"

@@ -45,9 +45,6 @@ ec=$?
 if [ $ec -eq 14 ]; then
   echo "usb printer not plugged in. will retry later"
   exit $ec
-elif [ $ec -eq 15 ]; then
-  echo "bench seems to redirect or data otherwise empty, skipping and marking..."
-  skipped=" skipped"
 elif [ $ec -ne 0 ]; then
   echo "failed to print bench. exit code ${ec}. not saving to cache... quitting..."
   exit $ec
