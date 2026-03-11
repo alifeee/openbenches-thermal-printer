@@ -1,3 +1,5 @@
+> [!CAUTION]
+> MOVED! see <https://git.alifeee.net/openbenches-thermal-printer/about/>
 # Bench thermal printing
 
 Printing benches from <https://openbenches.org/> with a ZJ-5870 ESC/POS thermal printer.
